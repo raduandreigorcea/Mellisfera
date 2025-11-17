@@ -1,0 +1,91 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Button from "@components/buttons/Button.astro";
+---
+
+<Layout>
+    <main>
+        <section class="error-section">
+            <div class="error-content">
+                <h1 class="title-large">404</h1>
+                <p class="subtitle">Page Not Found</p>
+                <p class="text-large">Sorry, the page you're looking for doesn't exist. It might have been moved, deleted, or you entered the wrong URL.</p>
+                
+                <div class="error-button">
+                    <Button className="shop-button" icon="shop" href="/shop">Browse Collection</Button>
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<style>
+    main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .error-section {
+        padding: 6rem 0 4rem;
+        text-align: center;
+    }
+
+    .error-content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .error-button {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        margin-top: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .suggestions {
+        padding: 4rem 0;
+        text-align: center;
+        border-top: 1px solid rgba(212, 165, 116, 0.3);
+    }
+
+    .suggestion-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .suggestion-card {
+        padding: 2rem;
+        background: rgba(249, 239, 225, 0.3);
+        border-radius: 8px;
+        transition: transform 200ms ease;
+    }
+
+    .suggestion-card:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        main {
+            padding: 0 1rem;
+        }
+        
+        .error-section {
+            padding: 4rem 0 2rem;
+        }
+        
+        .error-buttons {
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .suggestion-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

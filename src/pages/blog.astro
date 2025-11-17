@@ -1,0 +1,131 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Hero from "@/components/elements/Hero.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import BlogCard from "@/components/elements/BlogCard.astro";
+import SearchBar from "@/components/elements/SearchBar.astro";
+import blogImg from "@/assets/images/blog.jpg";
+
+const posts = ((await getCollection("blog")) as CollectionEntry<"blog">[]).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<Layout>
+    <Hero
+        title="Our Blog"
+        subtitle="News, guides, recipes, and stories from the apiary"
+        backgroundImage={blogImg}
+    />
+
+    <section aria-label="Filters" class="filters">
+        <div class="filters-inner">
+            <SearchBar id="blog-search" placeholder="Search posts..." />
+            {(() => {
+                const allCategories = Array.from(
+                    new Set(
+                        posts.flatMap((p) => (p.data.categories as string[] | undefined) ?? [])
+                    )
+                ).sort((a, b) => a.localeCompare(b));
+                return (
+                    <div class="category-chips" aria-label="Categories">
+                        <button class="chip active" data-cat="all">All</button>
+                        {allCategories.map((cat) => (
+                            <button class="chip" data-cat={cat.toLowerCase()}>{cat}</button>
+                        ))}
+                    </div>
+                );
+            })()}
+        </div>
+    </section>
+
+    <section aria-label="Blog posts" class="blog-list" data-list>
+        <ul class="blog-grid">
+            {posts.map((post) => (
+                <BlogCard
+                    href={`/blog/${post.id}/`}
+                    title={post.data.title}
+                    date={post.data.pubDate}
+                    description={post.data.description}
+                    imageSrc={post.data.heroImage?.src}
+                    badge={(post.data.categories && post.data.categories[0]) || 'Blog'}
+                    data-title={post.data.title}
+                    data-desc={post.data.description}
+                    data-cats={(post.data.categories || []).map(c => c.toLowerCase()).join(',')}
+                />
+            ))}
+        </ul>
+    </section>
+</Layout>
+
+<style>
+    .filters { margin-block: 1.25rem 0.5rem; }
+    .filters-inner { display: grid; gap: 0.75rem; }
+    .category-chips { display:flex; flex-wrap: wrap; gap: .5rem; }
+    .chip { 
+        background: var(--element-background); border: 1px solid transparent; border-radius: 999px; 
+        padding: .4rem .8rem; cursor: pointer; font-family: var(--font-body); 
+    }
+    .chip.active { border-color: var(--button-background); }
+    .chip:hover { border-color: var(--button-background-hover); }
+
+    .blog-list {
+        margin-block: 2rem 3rem;
+    }
+    .blog-grid {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 460px));
+        justify-content: center;
+        gap: clamp(0.75rem, 2vw, 1.25rem);
+    }
+    /* Card styles moved into BlogCard component */
+
+    @media (max-width: 640px) {
+        .blog-list {
+            margin-block: 1rem 2rem;
+        }
+        .blog-grid {
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        }
+    /* spacing tweaks are inside BlogCard */
+    }
+</style>
+
+<script>
+    // Client-side filtering by text and category
+    const searchInput = document.getElementById('blog-search') as HTMLInputElement | null;
+    const list = document.querySelector('[data-list] .blog-grid');
+    const chips = Array.from(document.querySelectorAll('.chip')) as HTMLButtonElement[];
+
+    function normalize(s: string){ return s.toLowerCase(); }
+        function match(post: HTMLElement, q: string, cat: string){
+        const title = post.getAttribute('data-title') || '';
+        const desc = post.getAttribute('data-desc') || '';
+            const cats = (post.getAttribute('data-cats') || '').split(',').map(c => c.trim()).filter(Boolean);
+        const textOk = !q || (normalize(title).includes(q) || normalize(desc).includes(q));
+        const catOk = cat === 'all' || cats.includes(cat);
+        return textOk && catOk;
+    }
+
+    function render(){
+        if(!list) return;
+        const q = normalize(searchInput?.value || '');
+        const active = ((document.querySelector('.chip.active') as HTMLButtonElement | null)?.dataset.cat || 'all').toLowerCase();
+        Array.from(list.children).forEach((li) => {
+            const el = li as HTMLElement;
+            const ok = match(el, q, active);
+            el.style.display = ok ? '' : 'none';
+        });
+    }
+
+    searchInput?.addEventListener('input', render);
+    chips.forEach((btn) => btn.addEventListener('click', () => {
+        chips.forEach(c => c.classList.toggle('active', c === btn));
+        render();
+    }));
+
+    // Initial
+    render();
+</script>

@@ -1,0 +1,115 @@
+---
+import Icon from "./Icon.astro";
+
+export interface Props {
+    className?: string;
+    href?: string;
+    icon?: string;
+}
+
+const { className, href = "#", icon, ...props } = Astro.props;
+
+// Check if shop-button class is present
+const isShopButton = className?.includes('shop-button');
+const fontClass = isShopButton ? 'subtitle' : 'button';
+---
+
+<a href={href} class:list={[className, fontClass]} {...props}>
+    {icon && <Icon name={icon} />}
+    <slot />
+</a>
+
+<style is:global>
+    svg {
+        transition: inherit;
+    }
+
+    a {
+        cursor: pointer;
+        user-select: none;
+        text-decoration: none;
+        touch-action: manipulation;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        position: relative;
+        transition: all 100ms linear;
+    }
+
+    a::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 3px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--button-background-hover);
+        transform-origin: bottom right;
+        transition: transform 0.25s ease-out;
+    }
+
+    a:hover{
+        color: var(--button-background-hover);
+    }
+
+    a:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+    }
+
+    a:hover svg {
+        color: var(--button-background-hover);
+    }
+
+    a:focus {
+        outline: 0;
+    }
+
+
+
+    a.shop-button {
+        margin-top: 14px;
+        padding: 0.5rem 1rem;
+
+        background-color: var(--button-background);
+        border: 0 solid var(--background);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: var(--dark-text);
+        text-align: center;
+
+        max-width: 460px;
+
+        transform: rotate(-1.45deg);
+    }
+
+    a.shop-button:after {
+        border: 1px solid #000000;
+        background: transparent;
+
+        bottom: 4px;
+        left: 4px;
+        width: calc(100% - 1px);
+        height: calc(100% - 1px);
+        transform: scaleX(1);
+        transition: inherit;
+    }
+
+    a.shop-button:hover {
+        background-color: var(--button-background-hover);
+        color: var(--background);
+    }
+
+    a.shop-button:hover::after {
+        bottom: 2px;
+        left: 2px;
+    }
+
+    a.shop-button:hover svg {
+        color: var(--background);
+    }
+</style>

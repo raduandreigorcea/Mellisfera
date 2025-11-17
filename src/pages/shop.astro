@@ -1,0 +1,482 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro";
+import Product from "@/components/elements/Product.astro";
+import SearchBar from "@/components/elements/SearchBar.astro";
+import FilterModal from "@/components/elements/FilterModal.astro";
+
+// Initialize Stripe
+import Stripe from 'stripe';
+
+// Define product interface
+interface ProductData {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    currency: string;
+    image: string;
+    url: string;
+    category: string;
+    created: number;
+}
+
+// You'll need to set your Stripe secret key as an environment variable
+// For development, you can use your test key
+const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY || 'sk_test_...', {
+    apiVersion: '2025-07-30.basil',
+});
+
+let products: ProductData[] = [];
+let error: string | null = null;
+
+try {
+    // Fetch products from Stripe
+    const stripeProducts = await stripe.products.list({
+        active: true,
+        expand: ['data.default_price'],
+        limit: 20,
+    });
+
+    // Transform Stripe products to our component format
+    products = stripeProducts.data.map(product => {
+        const price = product.default_price;
+        const priceAmount = typeof price === 'object' && price ? price.unit_amount || 0 : 0;
+        const currency = typeof price === 'object' && price ? price.currency || 'ron' : 'ron';
+        
+        // Extract category from product metadata or use a default
+        const category = product.metadata?.category || 'Honey';
+        
+        // Get the payment link from metadata, or use product.url as fallback
+        const paymentUrl = product.metadata?.link || product.url || `#product-${product.id}`;
+        
+        return {
+            id: product.id,
+            name: product.name,
+            description: product.description || '',
+            price: priceAmount,
+            currency: currency,
+            image: product.images?.[0] || '',
+            url: paymentUrl,
+            category: category,
+            created: product.created || 0,
+        };
+    });
+
+    // Default alphabetical order by product name on initial render
+    products.sort((a, b) => a.name.localeCompare(b.name));
+} catch (err) {
+    console.error('Error fetching products from Stripe:', err);
+    error = 'Failed to load products. Please try again later.';
+}
+
+---
+
+<ContentLayout>
+
+    <section class="shop-section">
+        <div class="container">
+            {error ? (
+                <div class="error-message">
+                    <h3 class="title-small">Oops! Something went wrong</h3>
+                    <p class="text-normal">{error}</p>
+                    <p class="text-normal">Please try refreshing the page or contact us if the problem persists.</p>
+                </div>
+            ) : (
+                <>
+                    {products.length === 0 ? (
+                        <div class="no-products">
+                            <h3 class="title-small">No products available</h3>
+                            <p class="text-normal">We're currently updating our product catalog. Please check back soon!</p>
+                        </div>
+                    ) : (
+                        <>
+                            <div class="shop-header">
+                                <div class="search-filter-section">
+                                    <div class="search-container">
+                                        <SearchBar 
+                                            placeholder="Search for honey products..."
+                                            id="product-search"
+                                            className="shop-search"
+                                        />
+                                        <button class="filter-button button" id="filter-button">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M4 6H20M7 12H17M10 18H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                            <span>Filters</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="results-info">
+                                    <span id="results-count" class="text-normal">Showing all products</span>
+                                </div>
+                            </div>
+
+                            <!-- Filter Modal with dynamic categories from Stripe products -->
+                            {(() => {
+                                const categories = Array.from(new Set(products.map(p => p.category))).filter(Boolean);
+                                return <FilterModal id="filter-modal" categories={categories} />
+                            })()}
+                            
+                            <div class="products-grid" id="products-grid">
+                {products.map(product => (
+                                    <div 
+                                        data-category={product.category} 
+                                        data-price={product.price} 
+                    data-name={product.name.toLowerCase()}
+                    data-created={product.created}
+                                    >
+                                        <Product 
+                                            id={product.id}
+                                            name={product.name}
+                                            description={product.description}
+                                            price={product.price}
+                                            currency={product.currency}
+                                            image={product.image}
+                                            url={product.url}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </>
+                    )}
+                </>
+            )}
+        </div>
+    </section>
+</ContentLayout>
+
+<style>
+    .shop-section {
+        padding: 4rem 0;
+        background: var(--background-color);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .shop-header {
+        margin-bottom: 3rem;
+    }
+
+    /* ===== SEARCH & FILTER BAR ===== */
+    .search-filter-section {
+        margin-bottom: 2rem;
+    }
+
+    .search-container {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .search-container :global(.search-wrapper) {
+        flex: 1;
+    }
+
+    .filter-button {
+        background: var(--button-background);
+        border: 2px solid var(--button-background);
+        border-radius: 12px;
+        padding: 0.875rem 1.5rem;
+        cursor: pointer;
+        transition: all 200ms ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+        min-width: fit-content;
+    }
+
+    .filter-button:hover {
+        background: var(--button-background-hover);
+        border-color: var(--button-background-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .filter-button svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .results-info {
+        text-align: center;
+        padding: 1rem 0;
+        color: var(--dark-text);
+        font-weight: 500;
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .error-message,
+    .no-products {
+        text-align: center;
+        padding: 3rem 2rem;
+        background: var(--element-background);
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .error-message h3,
+    .no-products h3 {
+        margin-bottom: 1rem;
+    }
+
+    .error-message p,
+    .no-products p {
+        margin-bottom: 0.5rem;
+    }
+
+    .error-message p:last-child {
+        margin-bottom: 0;
+    }
+
+    /* ===== RESPONSIVE DESIGN ===== */
+    @media (max-width: 768px) {
+        .shop-section {
+            padding: 2rem 0;
+        }
+
+        .container {
+            padding: 0 1rem;
+        }
+
+        .shop-header {
+            margin-bottom: 2rem;
+        }
+
+        /* Search & Filter Layout */
+        .search-container {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .filter-button {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Products Grid */
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        /* Small Mobile Adjustments */
+        .search-filter-section {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Single Column Products */
+        .products-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+    }
+</style>
+
+<script>
+    // ===== TYPE DEFINITIONS =====
+    interface ProductData {
+        id: string;
+        name: string;
+        description: string;
+        price: number;
+        currency: string;
+        image: string;
+        url: string;
+        category: string;
+    }
+
+    // ===== DOM ELEMENTS =====
+    const searchInput = document.getElementById('product-search') as HTMLInputElement;
+    const sortFilter = document.getElementById('sort-filter') as HTMLSelectElement;
+    const priceFilter = document.getElementById('price-filter') as HTMLSelectElement;
+    const productsGrid = document.getElementById('products-grid') as HTMLElement;
+    const resultsCount = document.getElementById('results-count') as HTMLElement;
+    const categoryTabs = document.querySelectorAll('.filter-tab') as NodeListOf<HTMLButtonElement>;
+    
+    // Modal Elements (Dialog)
+    const filterButton = document.getElementById('filter-button') as HTMLButtonElement;
+    const filterModal = document.getElementById('filter-modal') as HTMLDialogElement;
+    const filterModalClose = document.getElementById('filter-modal-close') as HTMLButtonElement;
+    const filterApplyBtn = document.getElementById('filter-apply-btn') as HTMLButtonElement;
+    const filterClearBtn = document.getElementById('filter-clear-btn') as HTMLButtonElement;
+
+    // ===== STATE VARIABLES =====
+    let currentCategory = 'all';
+    let currentSearch = '';
+    let currentSort = 'name';
+    let currentPriceRange = 'all';
+
+    // ===== UTILITY FUNCTIONS =====
+    function updateResultsCount() {
+        const visibleProducts = productsGrid?.querySelectorAll('[data-category]:not([style*="display: none"])').length || 0;
+        if (resultsCount) {
+            resultsCount.textContent = `Showing ${visibleProducts} product${visibleProducts !== 1 ? 's' : ''}`;
+        }
+    }
+
+    // ===== FILTERING & SORTING =====
+    function filterAndSortProducts() {
+        const productCards = Array.from(productsGrid?.children || []) as HTMLElement[];
+
+        // Apply filters to each product card
+        productCards.forEach(card => {
+            const productCategory = card.getAttribute('data-category') || 'Raw Honey';
+            const productName = card.getAttribute('data-name') || '';
+            const productPrice = parseFloat(card.getAttribute('data-price') || '0') / 100; // Convert from cents
+
+            // Check if product matches all filters
+            const matchesCategory = currentCategory === 'all' || productCategory === currentCategory;
+            const matchesSearch = currentSearch === '' || productName.includes(currentSearch);
+            
+            let matchesPrice = true;
+            if (currentPriceRange !== 'all') {
+                if (currentPriceRange.endsWith('+')) {
+                    const min = parseFloat(currentPriceRange.replace('+', '')) || 0;
+                    matchesPrice = productPrice >= min;
+                } else {
+                    const [min, max] = currentPriceRange.split('-').map(p => parseFloat(p));
+                    matchesPrice = productPrice >= min && productPrice <= max;
+                }
+            }
+
+            // Show/hide based on filter results
+            card.style.display = (matchesCategory && matchesSearch && matchesPrice) ? 'block' : 'none';
+        });
+
+        // Sort visible products
+        const visibleCards = productCards.filter(card => card.style.display !== 'none');
+        visibleCards.sort((a, b) => {
+            const aName = a.getAttribute('data-name') || '';
+            const bName = b.getAttribute('data-name') || '';
+            const aPrice = parseFloat(a.getAttribute('data-price') || '0');
+            const bPrice = parseFloat(b.getAttribute('data-price') || '0');
+            const aCreated = parseInt(a.getAttribute('data-created') || '0', 10);
+            const bCreated = parseInt(b.getAttribute('data-created') || '0', 10);
+
+            switch (currentSort) {
+                case 'name': return aName.localeCompare(bName);
+                case 'price-low': return aPrice - bPrice;
+                case 'price-high': return bPrice - aPrice;
+                case 'newest': return bCreated - aCreated; // Newest first
+                default: return 0;
+            }
+        });
+
+        // Reorder DOM elements
+        visibleCards.forEach(card => productsGrid?.appendChild(card));
+        updateResultsCount();
+    }
+
+    // ===== MODAL FUNCTIONALITY =====
+    function openModal() {
+        filterModal?.showModal();
+    }
+
+    function closeModal() {
+        filterModal?.close();
+    }
+
+    function clearAllFilters() {
+        // Reset all filter states
+        currentCategory = 'all';
+        currentSearch = '';
+        currentSort = 'name';
+        currentPriceRange = 'all';
+
+        // Update UI elements
+        categoryTabs.forEach(tab => {
+            tab.classList.remove('active');
+            if (tab.getAttribute('data-category') === 'all') {
+                tab.classList.add('active');
+            }
+        });
+
+        if (sortFilter) sortFilter.value = 'name';
+        if (priceFilter) priceFilter.value = 'all';
+        if (searchInput) searchInput.value = '';
+
+        filterAndSortProducts();
+    }
+
+    // ===== EVENT LISTENERS =====
+    
+    // Modal Controls
+    filterButton?.addEventListener('click', openModal);
+    filterModalClose?.addEventListener('click', closeModal);
+    filterApplyBtn?.addEventListener('click', closeModal);
+    filterClearBtn?.addEventListener('click', () => {
+        clearAllFilters();
+        closeModal();
+    });
+
+    // Close modal when clicking on backdrop
+    filterModal?.addEventListener('click', (e) => {
+        if (e.target === filterModal) {
+            closeModal();
+        }
+    });
+
+    // Keyboard Controls
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && filterModal?.open) {
+            closeModal();
+        }
+    });
+
+    // Category Tabs
+    categoryTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            categoryTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentCategory = tab.getAttribute('data-category') || 'all';
+            filterAndSortProducts();
+        });
+    });
+
+    // Search Input
+    searchInput?.addEventListener('input', (e) => {
+        currentSearch = (e.target as HTMLInputElement).value.toLowerCase();
+        filterAndSortProducts();
+    });
+
+    // Search Clear Button (if present)
+    const clearButton = document.querySelector('.search-clear');
+    clearButton?.addEventListener('click', () => {
+        if (searchInput) {
+            searchInput.value = '';
+            currentSearch = '';
+            filterAndSortProducts();
+        }
+    });
+
+    // Sort & Price Filters
+    sortFilter?.addEventListener('change', (e) => {
+        currentSort = (e.target as HTMLSelectElement).value;
+        filterAndSortProducts();
+    });
+
+    priceFilter?.addEventListener('change', (e) => {
+        currentPriceRange = (e.target as HTMLSelectElement).value;
+        filterAndSortProducts();
+    });
+
+    // ===== INITIALIZATION =====
+    // Ensure default sort (alphabetical) is applied on first load
+    filterAndSortProducts();
+</script>

@@ -1,0 +1,67 @@
+---
+export interface Props {
+  name: string;
+  size?: string;
+}
+
+const { name, size = "20", ...props } = Astro.props;
+
+// Define SVG icons with their proper viewBox
+const icons: Record<string, { path: string; viewBox: string }> = {
+  home: {
+    path: `<path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+    viewBox: "0 0 24 24"
+  },
+  shop: {
+    path: `<path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+    viewBox: "0 0 24 24"
+  },
+  about: {
+    path: `<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" fill="none"/>`,
+    viewBox: "0 0 24 24"
+  },
+  blog: {
+    path: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="10,9 9,9 8,9" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+    viewBox: "0 0 24 24"
+  }
+};
+
+const iconData = icons[name];
+---
+
+{iconData ? (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox={iconData.viewBox}
+    class={name === 'blog' ? 'blog-icon' : ''}
+    {...props}
+    set:html={iconData.path}
+  />
+) : (
+  <span class="icon-missing" {...props}>
+    {name}
+  </span>
+)}
+
+<style>
+  svg {
+    display: inline-block;
+    vertical-align: middle;
+    fill: currentColor;
+  }
+  
+  .blog-icon {
+    transform: rotate(45deg);
+    transform-origin: center;
+  }
+  
+  .icon-missing {
+    display: inline-block;
+    vertical-align: middle;
+    color: #999;
+    border: 1px dashed #ccc;
+    padding: 2px 4px;
+    font-size: 15px;
+  }
+</style>

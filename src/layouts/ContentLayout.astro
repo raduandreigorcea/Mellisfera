@@ -1,0 +1,41 @@
+---
+import Head from "@/components/Head.astro";
+import Menu from "@components/menu/Menu.astro";
+import Button from "@components/buttons/Button.astro";
+
+import Footer from "@/components/footer/Footer.astro";
+
+import "@utils/style.css";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<Head />
+	<body>
+		<Menu>
+			<Button icon="home" href="/">Home</Button>
+			<Button icon="about" href="/about">About</Button>
+			<Button icon="blog" href="/blog">Blog</Button>
+
+			<Button className="shop-button" icon="shop" href="/shop"
+				>SHOP</Button
+			>
+		</Menu>
+
+		<main>
+			<slot />
+		</main>
+
+		<Footer />
+	</body>
+</html>
+
+<style>
+	html {
+		padding: 0;
+		width: 100%;
+		height: 100%;
+
+		min-block-size: 100vh;
+	}
+</style>

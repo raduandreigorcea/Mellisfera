@@ -1,0 +1,293 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import personImg from "@/assets/images/utils/person.png";
+import Button from "@/components/buttons/Button.astro";
+import Hero from "@/components/elements/Hero.astro";
+import TeamMember from "@/components/elements/TeamMember.astro";
+
+
+import { Image } from "astro:assets";
+import aboutImg from "@/assets/images/about.jpg";
+import main from "@/assets/images/main-about.avif";
+---
+
+<Layout>
+    <!-- Hero Section -->
+    <Hero
+        title="About Us"
+        subtitle="Three generations of beekeeping excellence"
+        backgroundImage={aboutImg}
+    />
+
+    <!-- Our Story Section -->
+    <section class="our-story">
+        <p class="accent-normal">Since 1962</p>
+        <div class="story-content">
+            <div class="story-text">
+                <h2 class="title-medium">Our Heritage</h2>
+                <p class="text-large">
+                    What started with five wooden hives in a meadow behind our
+                    farmhouse has grown into a thriving family business spanning
+                    three generations.
+                </p>
+                <p class="text-normal">
+                    Robert Mellisfera's passion for beekeeping began as a
+                    weekend hobby but quickly became a calling. His deep respect
+                    for bees and commitment to natural methods laid the
+                    foundation for everything we do today.
+                </p>
+                <p class="text-normal">
+                    Today, we maintain over 200 hives across 50 acres of
+                    pristine countryside, but our core values remain unchanged:
+                    bee welfare first, pure natural honey, and sustainable
+                    practices that protect the environment.
+                </p>
+            </div>
+            <div class="story-image">
+                <Image
+                    src={main}
+                    alt="Our beekeeping heritage - vintage photo of the original apiary"
+                />
+            </div>
+        </div>
+    </section>
+
+    <!-- Meet the Team Section -->
+    <section class="team-section">
+        <div class="section-header">
+            <p class="accent-normal">Our Team</p>
+            <h2 class="title-medium center">Meet Our Beekeepers</h2>
+            <p class="text-large center">The people behind Mellisfera honey</p>
+        </div>
+        <div class="team-grid">
+            <TeamMember 
+                name="Stefan Grigorita"
+                description="Stefan has been working with bees for over 30 years. He handles hive management and honey harvesting with care and attention to detail."
+                imageSrc={personImg}
+                imageAlt="Stefan Grigorita - Beekeeper"
+            />
+
+            <TeamMember 
+                name="Maria"
+                description="Maria takes care of the business operations, quality control, and ensures our honey meets the highest standards."
+                imageSrc={personImg}
+                imageAlt="Maria - Quality Control Manager"
+            />
+
+            <TeamMember 
+                name="David"
+                description="David works alongside Stefan in beekeeping activities and helps with the day-to-day care of our bee colonies."
+                imageSrc={personImg}
+                imageAlt="David - Beekeeper Assistant"
+            />
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section class="location-section">
+        <div class="section-header">
+            <p class="accent-normal">Visit Us</p>
+            <h2 class="title-medium center">Our Location</h2>
+            <p class="text-large center">Find us in the heart of Iași, Romania</p>
+        </div>
+        <div class="location-content">
+            <div class="location-info">
+                <h3 class="title-small">Mellisfera Apiary</h3>
+                <p class="text-normal">
+                    Our beekeeping operation is located in the beautiful countryside 
+                    surrounding Iași, where our bees have access to diverse wildflowers 
+                    and pristine natural environments.
+                </p>
+            </div>
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d88401.48915706159!2d27.50456996371405!3d47.156107757628526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40cafb7cf639ddbb%3A0x7ccb80da5426f53c!2zSWHImWk!5e1!3m2!1sro!2sro!4v1753275694430!5m2!1sro!2sro" 
+                    width="100%" 
+                    height="400" 
+                    style="border:0; border-radius: 12px;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Purchase Section -->
+    <section class="purchase-section">
+        <div class="section-header">
+            <p class="accent-normal">Get Our Honey</p>
+            <h2 class="title-medium center">How to Purchase</h2>
+            <p class="text-large center">Bringing pure honey straight to your table</p>
+        </div>
+        <div class="purchase-options">
+            <div class="purchase-option">
+                <h3 class="title-small">Direct from Farm</h3>
+                <p class="text-normal">
+                    Visit our apiary for the freshest honey straight from the hive. 
+                    Call ahead to schedule your visit and tour our facilities.
+                </p>
+                <Button className="shop-button">Schedule Visit</Button>
+            </div>
+            <div class="purchase-option">
+                <h3 class="title-small">Online Orders</h3>
+                <p class="text-normal">
+                    Browse our selection online and have fresh honey delivered 
+                    to your door. Perfect for gifts or regular honey lovers.
+                </p>
+                <Button href="/shop" className="shop-button">Shop Online</Button>
+            </div>
+        </div>
+    </section>
+
+</Layout>
+
+<style>
+    /* Section Styles - matching homepage */
+    section {
+        margin: 4rem 0;
+        padding: 0 2rem;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    /* Our Story Section - matching homepage style */
+    .story-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .story-image {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    line-height: 0; /* avoid baseline gap under inline images */
+    }
+
+    .story-image img {
+        display: block; /* remove descender space */
+        width: 100%;
+        height: auto;
+    }
+
+    /* Team Section */
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Location Section */
+    .location-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .location-info h3 {
+        margin-bottom: 1rem;
+        color: var(--button-background-hover);
+    }
+
+    .contact-details {
+        margin-top: 1.5rem;
+        padding: 1.5rem;
+        background: var(--element-background);
+        border-radius: 12px;
+        border-left: 4px solid var(--button-background-hover);
+    }
+
+    .map-container {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Purchase Section */
+    .purchase-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .purchase-option {
+        background: var(--element-background);
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .purchase-option h3 {
+        margin-bottom: 1rem;
+        color: var(--button-background-hover);
+    }
+
+    .purchase-option p {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Contact Button Style */
+    .contact-button {
+        padding: 0.75rem 1.5rem;
+        background-color: transparent;
+        border: 2px solid var(--button-background-hover);
+        border-radius: 8px;
+        color: var(--button-background-hover);
+        transition: all 200ms ease;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    .contact-button:hover {
+        background-color: var(--button-background-hover);
+        color: var(--background);
+        transform: none;
+    }
+
+    .contact-button::after {
+        display: none;
+    }
+
+
+    /* Responsive Design - matching homepage */
+    @media (max-width: 768px) {
+        .story-content {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .team-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .location-content {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .purchase-options {
+            grid-template-columns: 1fr;
+        }
+
+        section {
+            margin: 2rem 0;
+            padding: 0 1rem;
+        }
+    }
+</style>

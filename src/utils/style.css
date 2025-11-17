@@ -1,0 +1,174 @@
+@import url('_fonts.css');
+@import url('_variables.css');
+
+html {
+    scrollbar-width: thin;
+}
+
+.center {
+    text-align: center;
+}
+
+::selection {
+  color: var(--button-background-hover);
+  background: var(--button-background);
+}
+
+
+/* Title Classes - Lora Font */
+.title-large {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--light-text);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.title-medium {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--light-text);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.title-small {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: var(--button-background-hover);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+/* Body Text Classes - Poppins Font */
+.text-large {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--dark-text);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.text-normal {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--dark-text);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.text-small {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+/* Accent Classes - Dancing Script Font */
+.accent-large {
+    font-family: var(--font-accent);
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--light-text);
+    text-align: center;
+    margin: 2rem 0;
+    line-height: 1.2;
+}
+
+.accent-normal {
+    font-family: var(--font-accent);
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--button-background-hover);
+    text-align: center;
+    margin: 1.5rem 0;
+    line-height: 1.3;
+}
+
+.accent-small {
+    font-family: var(--font-accent);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--button-background-hover);
+    text-align: right;
+    margin: 1rem 0;
+    line-height: 1.4;
+}
+
+/* Label Classes - Poppins Bold */
+.label-large {
+    font-family: var(--font-body);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--button-background-hover);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: block;
+    margin: 1rem 0;
+}
+
+.label-normal {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--dark-text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+    margin: 0.5rem 1rem 0.5rem 0;
+}
+
+.label-small {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--button-background-hover);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+    margin: 0.5rem 1rem 0.5rem 0;
+}
+
+/* Special Classes */
+.quote {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--button-background-hover);
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1rem;
+    border-inline-start: 4px solid var(--light-text);
+    background: color-mix(in srgb, var(--button-background) 8%, hsl(42, 30%, 97%));
+}
+
+.subtitle {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 400;
+    font-style: italic;
+    color: #666;
+    text-align: center;
+    margin: 1rem 0;
+    line-height: 1.5;
+}
+
+/* Button Class */
+.button {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--dark-text);
+    line-height: 1.4;
+    padding-block: 0.65rem;
+    text-transform: none;
+    letter-spacing: 0.5px;
+}

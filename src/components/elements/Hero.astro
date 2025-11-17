@@ -1,0 +1,135 @@
+---
+type LocalImage = { src: string; width: number; height: number; format: string };
+
+export interface Props {
+    title?: string;
+    subtitle?: string;
+    description?: string;
+    buttonText?: string;
+    buttonIcon?: string;
+    buttonHref?: string;
+    backgroundImage?: string | LocalImage;
+        /** Optional width to generate the background image at (for optimization). */
+        backgroundWidth?: number;
+        /** Optional output format (webp | avif | png | jpeg). */
+        backgroundFormat?: 'webp' | 'avif' | 'png' | 'jpeg';
+        /** Optional quality (1-100). */
+        backgroundQuality?: number;
+    pretitle?: string;
+}
+
+const {
+    title,
+    subtitle,
+    description,
+    buttonText,
+    buttonIcon,
+    buttonHref,
+        backgroundImage = heroBg,
+        backgroundWidth = 1600,
+        backgroundFormat = 'webp',
+        backgroundQuality = 80,
+    pretitle
+} = Astro.props;
+
+import Button from "@/components/buttons/Button.astro";
+import heroBg from "@/assets/images/home.jpg";
+import { getImage } from 'astro:assets';
+
+// Compute an optimized background image URL using getImage().
+let bgUrl: string;
+try {
+    const source = typeof backgroundImage === 'string' ? backgroundImage : (backgroundImage as any);
+    const optimized = await getImage({
+        src: source,
+        width: backgroundWidth,
+        format: backgroundFormat,
+        quality: backgroundQuality,
+    });
+    bgUrl = optimized.src;
+} catch (err) {
+    // Fallback to the original source if optimization is not possible (e.g., unauthorized remote/public path).
+    bgUrl = typeof backgroundImage === 'string' ? backgroundImage : backgroundImage.src;
+}
+---
+
+<section
+    class="hero"
+    style={`--hero-bg-image: url("${bgUrl}")`}
+>
+    <div class="hero-content">
+        {pretitle && <p class="accent-normal">{pretitle}</p>}
+        {title && (
+            <h1 class="title-large center">
+                {title}
+            </h1>
+        )}
+        {subtitle && <p class="subtitle">{subtitle}</p>}
+        {description && (
+            <p class="text-large">
+                {description}
+            </p>
+        )}
+        {buttonText && buttonHref && (
+            <div class="button-center">
+                <Button className="shop-button" icon={buttonIcon} href={buttonHref}>
+                    {buttonText}
+                </Button>
+            </div>
+        )}
+    </div>
+</section>
+
+<style>
+    /* Hero Section */
+    .hero {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+        margin: 3rem 0 5rem;
+        padding: 4rem 2rem;
+        position: relative;
+
+        background-image: var(--hero-bg-image);
+        background-size: cover;
+        background-position: center;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: color-mix(
+            in srgb,
+            var(--element-background) 40%,
+            transparent
+        );
+        z-index: 1;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        background: var(--background);
+        padding: 3rem;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero {
+            grid-template-columns: 1fr;
+            margin: 2rem 0 3rem;
+            padding: 2rem 1rem;
+        }
+        
+        .hero-content {
+            padding: 2rem;
+        }
+    }
+</style>

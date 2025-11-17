@@ -1,0 +1,428 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Testimonial from "@/components/elements/Testimonial.astro";
+import Product from "@/components/elements/Product.astro";
+import FeatureCard from "@/components/elements/FeatureCard.astro";
+import Hero from "@/components/elements/Hero.astro";
+
+import { Image } from "astro:assets";
+import mainImg from "@/assets/images/main.jpg";
+
+import productImg from "@/assets/images/utils/placeholder-product.jpg";
+
+import { title } from "@/utils/title";
+---
+
+<Layout>
+    <!-- Hero Section -->
+    <Hero 
+        pretitle="Welcome to"
+        title={title}
+        subtitle="Pure honey, straight from the hive"
+        description="Discover the golden treasure of nature. Our honey is carefully harvested from local beehives, preserving the pure essence and natural goodness that only the finest apiaries can provide."
+        buttonText="Explore Collections"
+        buttonIcon="shop"
+        buttonHref="/shop"
+    />
+
+    <!-- Best Sellers Section -->
+    <section class="best-sellers">
+        <div class="section-header">
+            <p class="accent-normal">Our Favorites</p>
+            <h2 class="title-medium center">Best Sellers</h2>
+            <p class="text-large center">
+                Discover our most beloved honey varieties, carefully selected by
+                our customers
+            </p>
+        </div>
+        <div class="products-grid">
+            <Product
+                id="best-1"
+                name="Wildflower Honey"
+                price={2999}
+                currency="ron"
+                image={productImg.src}
+                url="/shop"
+            />
+            <Product
+                id="best-2"
+                name="Acacia Honey"
+                price={3499}
+                currency="ron"
+                image={productImg.src}
+                url="/shop"
+            />
+            <Product
+                id="best-3"
+                name="Forest Honey"
+                price={3199}
+                currency="ron"
+                image={productImg.src}
+                url="/shop"
+            />
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="our-story">
+        <div class="story-content">
+            <div class="story-text">
+                <p class="accent-normal">Our Journey</p>
+                <h2 class="title-medium">The Story Behind Mellisfera</h2>
+                <p class="text-large">
+                    For three generations, our family has been dedicated to the
+                    art of beekeeping. What started as a small backyard
+                    operation has grown into a passionate mission to bring you
+                    the purest, most delicious honey nature has to offer.
+                </p>
+                <p class="text-normal">
+                    Our name "Mellisfera" comes from the Latin words for honey
+                    and bearer, reflecting our commitment to being custodians of
+                    these incredible creatures and the liquid gold they produce.
+                    Every jar tells a story of sustainability, care, and the
+                    ancient partnership between humans and bees.
+                </p>
+            </div>
+            <div class="story-image">
+                <Image src={mainImg} alt="Our beekeeping heritage" />
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-us">
+        <div class="section-header">
+            <p class="accent-normal">Why Choose</p>
+            <h2 class="title-medium center">Mellisfera Honey</h2>
+        </div>
+        <div class="features-grid">
+            <FeatureCard
+                emoji="🌿"
+                title="100% Pure & Natural"
+                description="Our honey is never heated, filtered, or processed. What you get is exactly what the bees intended - pure, raw honey with all its natural enzymes and nutrients intact."
+            />
+            <FeatureCard
+                emoji="🐝"
+                title="Sustainably Harvested"
+                description="We practice ethical beekeeping, ensuring our bees are healthy and happy. Our sustainable methods protect both the environment and future honey production."
+            />
+            <FeatureCard
+                emoji="🏡"
+                title="Local & Fresh"
+                description="Sourced from carefully selected local apiaries, our honey captures the unique flavors of regional flowers and ensures maximum freshness in every jar."
+            />
+        </div>
+    </section>
+
+    <!-- How It's Made Section -->
+    <section class="how-its-made">
+        <div class="section-header">
+            <p class="accent-normal">Our Process</p>
+            <h2 class="title-medium center">From Hive to Home</h2>
+            <p class="text-large center">
+                Discover the careful journey our honey takes from the beehive to your table
+            </p>
+        </div>
+        <div class="process-steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3 class="title-small">Sustainable Beekeeping</h3>
+                <p class="text-normal">
+                    Our beekeepers work in harmony with nature, providing healthy environments 
+                    for our bees to thrive and produce the finest honey.
+                </p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3 class="title-small">Careful Harvesting</h3>
+                <p class="text-normal">
+                    We harvest only surplus honey, ensuring our bees have enough for themselves 
+                    while collecting the golden treasure they've created.
+                </p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3 class="title-small">Minimal Processing</h3>
+                <p class="text-normal">
+                    Our honey is strained only to remove wax and debris, preserving all the 
+                    natural enzymes, pollen, and nutrients that make raw honey so special.
+                </p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3 class="title-small">Quality Testing</h3>
+                <p class="text-normal">
+                    Every batch is tested for purity and quality, ensuring you receive only 
+                    the finest honey that meets our strict standards.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter/CTA Section -->
+    <section class="newsletter">
+        <div class="newsletter-content">
+            <div class="newsletter-text">
+                <p class="accent-normal">Stay Connected</p>
+                <h2 class="title-medium">Join the Mellisfera Family</h2>
+                <p class="text-large">
+                    Get exclusive updates about new honey varieties, seasonal harvests, 
+                    beekeeping tips, and special offers delivered straight to your inbox.
+                </p>
+                <div class="newsletter-benefits">
+                    <p class="text-normal">✨ First access to limited edition honey</p>
+                    <p class="text-normal">🍯 Seasonal recipes and pairing guides</p>
+                    <p class="text-normal">🐝 Behind-the-scenes beekeeping stories</p>
+                    <p class="text-normal">💰 Exclusive member discounts</p>
+                </div>
+            </div>
+            <div class="newsletter-form">
+                <div class="form-container">
+                    <h3 class="title-small center">Subscribe to Our Newsletter</h3>
+                    <form class="email-form">
+                        <input 
+                            type="email" 
+                            placeholder="Enter your email address" 
+                            class="email-input text-normal"
+                            required
+                        />
+                        <button type="submit" class="subscribe-button button">
+                            Subscribe
+                        </button>
+                    </form>
+                    <p class="text-small center">
+                        We respect your privacy. Unsubscribe at any time.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="section-header">
+            <p class="accent-normal">What People Say</p>
+            <h2 class="title-medium center">Customer Reviews</h2>
+        </div>
+        <div class="testimonials-grid">
+            <Testimonial
+                quote="The best honey I've ever tasted! You can really taste the difference when it's this pure and fresh."
+                author="Sarah Johnson"
+            />
+            <Testimonial
+                quote="Mellisfera's wildflower honey has become a staple in our kitchen. The quality is consistently outstanding."
+                author="Michael Chen"
+            />
+            <Testimonial
+                quote="As a chef, I'm particular about ingredients. This honey elevates every dish I use it in."
+                author="Chef Maria Rodriguez"
+            />
+        </div>
+    </section>
+</Layout>
+
+<style>
+    /* Section Styles */
+    section {
+        margin: 4rem 0;
+        padding: 0 2rem;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    /* Best Sellers Section */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Our Story Section */
+    .story-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .story-image {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        line-height: 0; /* avoid baseline gap under inline images */
+    }
+
+    .story-image img {
+        display: block; /* remove descender space */
+        width: 100%;
+        height: auto;
+    }
+
+    /* Why Choose Us Section */
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Testimonials Section */
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* How It's Made Section */
+    .process-steps {
+        display: grid;
+        grid-template-columns: 1fr; /* mobile: 1 per row */
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* tablet: 2 per row */
+    @media (min-width: 768px) {
+        .process-steps { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* laptop/desktop: 4 per row */
+    @media (min-width: 1024px) {
+        .process-steps { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .step {
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .step-number {
+        width: 60px;
+        height: 60px;
+        background: var(--button-background);
+        color: var(--background);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0 auto 1.5rem;
+        font-family: var(--font-accent);
+    }
+
+    /* Newsletter Section */
+    .newsletter {
+        background: var(--element-background);
+        margin: 4rem 0;
+        padding: 4rem 2rem;
+        border-radius: 12px;
+    }
+
+    .newsletter-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .newsletter-benefits {
+        margin-top: 1.5rem;
+    }
+
+    .newsletter-benefits p {
+        margin-bottom: 0.5rem;
+    }
+
+    .form-container {
+        background: var(--background);
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .email-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }
+
+    .email-input {
+        padding: 1rem;
+        border: 2px solid var(--element-background);
+        border-radius: 8px;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        transition: border-color 200ms ease;
+    }
+
+    .email-input:focus {
+        outline: none;
+        border-color: var(--button-background);
+    }
+
+    .subscribe-button {
+        background: var(--button-background);
+        color: var(--background);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 200ms ease;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .subscribe-button:hover {
+        background: var(--button-background-hover);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .story-content,
+        .newsletter-content {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+    .products-grid,
+    .features-grid,
+    .testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+        
+    /* compact spacing on small screens */
+    .process-steps { gap: 1rem; }
+        .step { padding: 1.25rem; }
+        .step-number { width: 48px; height: 48px; font-size: 1.25rem; }
+
+        section {
+            margin: 2rem 0;
+            padding: 0 1rem;
+        }
+
+        .newsletter {
+            padding: 2rem 1rem;
+        }
+
+        .email-form {
+            gap: 0.75rem;
+        }
+    }
+</style>

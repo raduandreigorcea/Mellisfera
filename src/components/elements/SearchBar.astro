@@ -1,0 +1,100 @@
+---
+export interface Props {
+    placeholder?: string;
+    id?: string;
+    className?: string;
+}
+
+const { 
+    placeholder = "Search...", 
+    id = "search-input",
+    className = ""
+} = Astro.props;
+---
+
+<div class={`search-container ${className}`}>
+    <div class="search-wrapper">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input 
+            type="text" 
+            id={id}
+            placeholder={placeholder}
+            class="search-input"
+        />
+        <button type="button" id={`${id}-clear`} class="clear-button" style="display: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<style>
+    /* Search Container */
+    .search-container {
+        width: 100%;
+    }
+
+    .search-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.875rem 1rem 0.875rem 3rem;
+        padding-right: 3rem;
+        border: 2px solid var(--element-background);
+        border-radius: 12px;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        transition: border-color 200ms ease;
+        scroll-margin-top: 200px;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: var(--button-background);
+    }
+
+    .clear-button {
+        position: absolute;
+        right: 1rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #666;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.25rem;
+        border-radius: 4px;
+        transition: color 200ms ease;
+    }
+
+    .clear-button:hover {
+        color: var(--button-background-hover);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 480px) {
+        .search-input {
+            font-size: 16px; /* Prevents zoom on iOS */
+        }
+    }
+</style>

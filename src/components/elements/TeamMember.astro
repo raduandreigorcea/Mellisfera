@@ -1,0 +1,73 @@
+---
+import { Image } from "astro:assets";
+import defaultPerson from "@/assets/images/utils/person.png";
+
+type LocalImage = { src: string; width: number; height: number; format: string };
+
+export interface Props {
+    name: string;
+    description: string;
+    imageSrc?: string | LocalImage;
+    imageAlt?: string;
+}
+
+const { name, description, imageSrc = defaultPerson, imageAlt = "beekeeper" } = Astro.props;
+// Normalize to a supported type for astro:assets Image (string path or imported image metadata)
+const normalizedImageSrc = imageSrc as any;
+---
+
+<div class="team-member">
+    <div class="member-image">
+        <div class="image-placeholder">
+            <Image src={normalizedImageSrc} alt={imageAlt} fit="cover" />
+        </div>
+    </div>
+    <div class="member-info">
+        <h3 class="title-small">{name}</h3>
+        <p class="text-normal">{description}</p>
+    </div>
+</div>
+
+<style>
+    .team-member {
+        background: var(--element-background);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        transition: transform 200ms ease;
+    padding-top: 1rem; /* add breathing room at the top of the card */
+    }
+
+    .team-member:hover {
+        transform: translateY(-4px);
+    }
+
+    .member-image {
+        width: 100%;
+        max-width: 240px;
+        aspect-ratio: 1 / 1;
+        overflow: hidden;
+        margin: 0 auto;
+        border-radius: 50%;
+    }
+
+    .image-placeholder,
+    .member-image img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .member-image img {
+        object-fit: cover;
+        display: block;
+    }
+
+    .member-info {
+        padding: 1.5rem;
+    }
+
+    .member-info h3 {
+        margin-bottom: 1rem;
+        color: var(--button-background-hover);
+    }
+</style>

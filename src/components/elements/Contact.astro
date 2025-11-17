@@ -1,0 +1,42 @@
+---
+import Button from "../buttons/Button.astro";
+---
+
+<section class="contact-section">
+    <p class="accent-large">Ready to taste nature's sweetest gift?</p>
+    <p class="text-normal">
+        Join thousands of happy customers who've discovered the pure joy of our
+        premium honey.
+    </p>
+    <div class="contact-buttons">
+        <Button icon="about" href="/about">Meet Our Beekeepers</Button>
+        <Button icon="blog" href="/blog">Read Our Blog</Button>
+    </div>
+</section>
+
+<style>
+    .contact-section {
+        padding: 4rem 0;
+        text-align: center;
+        background: var(--element-background);
+        border-radius: 12px;
+        max-width: 1200px;
+
+        width: min(100% - 4em, 1200px);
+        margin-inline: auto;
+    }
+
+    .contact-buttons {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .button-center {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+</style>

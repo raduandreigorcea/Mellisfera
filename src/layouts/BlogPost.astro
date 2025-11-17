@@ -1,0 +1,99 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import ContentLayout from './ContentLayout.astro';
+import Button from '@/components/buttons/Button.astro';
+import FormattedDate from '@/components/FormattedDate.astro';
+
+type Props = CollectionEntry<'blog'>['data'];
+const { title, description, pubDate, updatedDate, heroImage } = Astro.props as Props;
+---
+
+<ContentLayout>
+  <article class="post">
+    {heroImage && (
+      <div class="hero">
+        <Image src={heroImage} width={1400} height={700} alt="" />
+      </div>
+    )}
+
+    <nav class="post-nav">
+      <Button href="/blog" icon="blog" className="back-button">
+        Back to Mainpage
+      </Button>
+    </nav>
+
+    <header class="post-header center">
+      <p class="post-dates">
+        <FormattedDate date={pubDate} />
+        {updatedDate && (
+          <span> • Updated <FormattedDate date={updatedDate} /></span>
+        )}
+      </p>
+      <h1 class="title-medium">{title}</h1>
+      <p class="subtitle">{description}</p>
+    </header>
+
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</ContentLayout>
+
+<style>
+  .post { margin-block: 1.25rem 3rem; }
+  .hero { margin: 1rem auto 1.25rem; border-radius: 16px; overflow: hidden; }
+  .hero :global(img){ display:block; width:100%; height:auto; object-fit:cover; aspect-ratio: 21/9; }
+  .post-header { margin-block: .5rem 1rem; }
+  .post-dates { color: var(--text-muted, #666); margin: 0 0 .35rem 0; font-family: var(--font-body); }
+
+  /* Back to blog */
+  .post-nav { 
+    max-width: 1200px; /* align with site container width */
+    margin: 0 auto .25rem; /* center container, left-align content */
+    padding-inline: 0; 
+    display: flex;
+    justify-content: flex-start;
+  }
+  .back-button { 
+    border: 1px solid var(--button-background);
+    background: transparent;
+    color: var(--dark-text);
+    padding: .4rem .75rem;
+    border-radius: 8px;
+  }
+  .back-button::after { display: none; }
+  .back-button:hover { 
+    background: color-mix(in srgb, var(--button-background) 10%, var(--background));
+    border-color: var(--button-background-hover);
+    color: var(--dark-text);
+  }
+
+  /* Readable content width */
+  .prose { 
+    max-width: 72ch; 
+    margin-inline: auto; 
+    padding-inline: 1rem; 
+    font-family: var(--font-body);
+    color: var(--dark-text);
+  }
+  .prose :global(img){ max-width:100%; height:auto; border-radius: 10px; }
+  .prose :global(p){ line-height: 1.75; font-size: 1.05rem; }
+  .prose :global(h2){ font-family: var(--font-heading); font-size: clamp(1.35rem, 1.2vw + 1rem, 1.75rem); margin: 1.5rem 0 .5rem; }
+  .prose :global(h3){ font-family: var(--font-heading); font-size: clamp(1.15rem, 1vw + .9rem, 1.35rem); margin: 1.25rem 0 .5rem; }
+  .prose :global(ul), .prose :global(ol){ padding-inline-start: 1.25rem; }
+  .prose :global(blockquote){
+    margin: 1.5rem 0; padding: 1rem 1.25rem; border-inline-start: 4px solid var(--light-text);
+    background: color-mix(in srgb, var(--button-background) 8%, hsl(42, 30%, 97%));
+    font-style: italic; border-radius: 10px;
+  }
+  .prose :global(code){ background: rgba(0,0,0,.05); padding: .15rem .35rem; border-radius: 6px; }
+  .prose :global(pre){ background: #0b0b0b; color: #f6f6f6; padding: 1rem; border-radius: 12px; overflow:auto; }
+
+  @media (max-width: 640px){
+    .post { margin-block: .75rem 2rem; }
+    .hero { border-radius: 12px; }
+  .post-nav { padding-inline: 0; }
+    .prose { padding-inline: .75rem; }
+  }
+</style>

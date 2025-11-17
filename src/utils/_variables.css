@@ -1,0 +1,15 @@
+:root {
+    --dark-text: hsl(41, 100%, 7%);
+    --light-text: hsl(42, 100%, 50%);
+
+    --background: hsl(40, 100%, 99%);
+
+    --button-background: hsl(42, 100%, 61%);
+    --button-background-hover: hsl(29, 100%, 43%);
+
+    --element-background:  color-mix(in srgb, var(--button-background) 5%, var(--background));
+
+    --font-heading: 'Lora', serif;
+    --font-body: 'Poppins', sans-serif;
+    --font-accent: 'Dancing Script', cursive;
+}
