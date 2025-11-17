@@ -1,5 +1,7 @@
 # 🐝 Mellisfera
 
+![Mellisfera Demo](./image.png)
+
 Welcome to **Mellisfera**, a modern Astro-powered website dedicated to beekeeping, honey products, and sustainable gardening.
 
 ## ✨ Features
