@@ -4,70 +4,70 @@ import Product from "@/components/elements/Product.astro";
 import SearchBar from "@/components/elements/SearchBar.astro";
 import FilterModal from "@/components/elements/FilterModal.astro";
 
-// Initialize Stripe
-import Stripe from 'stripe';
+// // Initialize Stripe
+// import Stripe from 'stripe';
 
-// Define product interface
-interface ProductData {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    currency: string;
-    image: string;
-    url: string;
-    category: string;
-    created: number;
-}
+// // Define product interface
+// interface ProductData {
+//     id: string;
+//     name: string;
+//     description: string;
+//     price: number;
+//     currency: string;
+//     image: string;
+//     url: string;
+//     category: string;
+//     created: number;
+// }
 
-// You'll need to set your Stripe secret key as an environment variable
-// For development, you can use your test key
-const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY || 'sk_test_...', {
-    apiVersion: '2025-07-30.basil',
-});
+// // You'll need to set your Stripe secret key as an environment variable
+// // For development, you can use your test key
+// const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY || 'sk_test_...', {
+//     apiVersion: '2025-07-30.basil',
+// });
 
-let products: ProductData[] = [];
-let error: string | null = null;
+// let products: ProductData[] = [];
+// let error: string | null = null;
 
-try {
-    // Fetch products from Stripe
-    const stripeProducts = await stripe.products.list({
-        active: true,
-        expand: ['data.default_price'],
-        limit: 20,
-    });
+// try {
+//     // Fetch products from Stripe
+//     const stripeProducts = await stripe.products.list({
+//         active: true,
+//         expand: ['data.default_price'],
+//         limit: 20,
+//     });
 
-    // Transform Stripe products to our component format
-    products = stripeProducts.data.map(product => {
-        const price = product.default_price;
-        const priceAmount = typeof price === 'object' && price ? price.unit_amount || 0 : 0;
-        const currency = typeof price === 'object' && price ? price.currency || 'ron' : 'ron';
+//     // Transform Stripe products to our component format
+//     products = stripeProducts.data.map(product => {
+//         const price = product.default_price;
+//         const priceAmount = typeof price === 'object' && price ? price.unit_amount || 0 : 0;
+//         const currency = typeof price === 'object' && price ? price.currency || 'ron' : 'ron';
         
-        // Extract category from product metadata or use a default
-        const category = product.metadata?.category || 'Honey';
+//         // Extract category from product metadata or use a default
+//         const category = product.metadata?.category || 'Honey';
         
-        // Get the payment link from metadata, or use product.url as fallback
-        const paymentUrl = product.metadata?.link || product.url || `#product-${product.id}`;
+//         // Get the payment link from metadata, or use product.url as fallback
+//         const paymentUrl = product.metadata?.link || product.url || `#product-${product.id}`;
         
-        return {
-            id: product.id,
-            name: product.name,
-            description: product.description || '',
-            price: priceAmount,
-            currency: currency,
-            image: product.images?.[0] || '',
-            url: paymentUrl,
-            category: category,
-            created: product.created || 0,
-        };
-    });
+//         return {
+//             id: product.id,
+//             name: product.name,
+//             description: product.description || '',
+//             price: priceAmount,
+//             currency: currency,
+//             image: product.images?.[0] || '',
+//             url: paymentUrl,
+//             category: category,
+//             created: product.created || 0,
+//         };
+//     });
 
-    // Default alphabetical order by product name on initial render
-    products.sort((a, b) => a.name.localeCompare(b.name));
-} catch (err) {
-    console.error('Error fetching products from Stripe:', err);
-    error = 'Failed to load products. Please try again later.';
-}
+//     // Default alphabetical order by product name on initial render
+//     products.sort((a, b) => a.name.localeCompare(b.name));
+// } catch (err) {
+//     console.error('Error fetching products from Stripe:', err);
+//     error = 'Failed to load products. Please try again later.';
+// }
 
 ---
 
