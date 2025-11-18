@@ -1,5 +1,5 @@
 ---
-import ContentLayout from "@/layouts/ContentLayout.astro";
+import Layout from "@/layouts/Layout.astro";
 import Product from "@/components/elements/Product.astro";
 import SearchBar from "@/components/elements/SearchBar.astro";
 import FilterModal from "@/components/elements/FilterModal.astro";
@@ -71,7 +71,7 @@ try {
 
 ---
 
-<ContentLayout>
+<!-- <ContentLayout>
 
     <section class="shop-section">
         <div class="container">
@@ -112,7 +112,6 @@ try {
                                 </div>
                             </div>
 
-                            <!-- Filter Modal with dynamic categories from Stripe products -->
                             {(() => {
                                 const categories = Array.from(new Set(products.map(p => p.category))).filter(Boolean);
                                 return <FilterModal id="filter-modal" categories={categories} />
@@ -144,7 +143,11 @@ try {
             )}
         </div>
     </section>
-</ContentLayout>
+</ContentLayout> -->
+
+<Layout>
+    <h3 class="title-medium center">Placeholder for the shop :)</h3>
+</Layout>
 
 <style>
     .shop-section {
