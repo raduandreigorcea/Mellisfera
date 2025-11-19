@@ -6,7 +6,8 @@ import path from 'path';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://example.com',
+  site: 'https://raduandreigorcea.github.io/Mellisfera',
+  base: '/Mellisfera/',
   integrations: [mdx(), sitemap()],
   vite: {
     resolve: {
