@@ -83,19 +83,20 @@ try {
 <style>
     /* Hero Section */
     .hero {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 3rem;
+        display: flex;
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
         margin: 3rem 0 5rem;
         padding: 4rem 2rem;
         position: relative;
-
         background-image: var(--hero-bg-image);
         background-size: cover;
         background-position: center;
         border-radius: 12px;
         overflow: hidden;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .hero::before {
@@ -114,22 +115,25 @@ try {
         position: relative;
         z-index: 2;
         background: var(--background);
-        padding: 3rem;
+        padding: 3rem 2rem;
         border-radius: 12px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         backdrop-filter: blur(10px);
+        max-width: 600px;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
     }
 
     /* Responsive Design */
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
         .hero {
-            grid-template-columns: 1fr;
             margin: 2rem 0 3rem;
             padding: 2rem 1rem;
         }
         
         .hero-content {
-            padding: 2rem;
+            padding: 2rem 1rem;
         }
     }
 </style>

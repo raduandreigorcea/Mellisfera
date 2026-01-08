@@ -394,21 +394,27 @@ import { title } from "@/utils/title";
     }
 
     /* Responsive Design */
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
         .story-content,
         .newsletter-content {
             grid-template-columns: 1fr;
             gap: 2rem;
         }
+        
+        .story-image {
+            margin-top: 2rem;
+        }
+    }
 
-    .products-grid,
-    .features-grid,
-    .testimonials-grid {
+    @media (max-width: 768px) {
+        .products-grid,
+        .features-grid,
+        .testimonials-grid {
             grid-template-columns: 1fr;
         }
         
-    /* compact spacing on small screens */
-    .process-steps { gap: 1rem; }
+        /* compact spacing on small screens */
+        .process-steps { gap: 1rem; }
         .step { padding: 1.25rem; }
         .step-number { width: 48px; height: 48px; font-size: 1.25rem; }
 
@@ -423,6 +429,11 @@ import { title } from "@/utils/title";
 
         .email-form {
             gap: 0.75rem;
+        }
+        
+        .story-image img {
+            max-width: 100%;
+            height: auto;
         }
     }
 </style>
